@@ -17,6 +17,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: DEBUG list available modules
+        run: |
+          pip install aqtinstall
+          python3 -m aqt list-qt linux desktop --modules 6.8.3 linux_gcc_64
+
       - name: Install Qt (Desktop)
         uses: jurplel/install-qt-action@v4
         with:
