@@ -161,6 +161,7 @@ section { padding: 96px 0; }
     gap: 28px;
 }
 .nav-links a:not(.btn) {
+    white-space: nowrap;
     font-family: var(--font-mono);
     font-size: 0.85rem;
     color: var(--text);
@@ -458,8 +459,8 @@ section { padding: 96px 0; }
 }
 
 /* ---------- Responsive ---------- */
-@media (max-width: 760px) {
-    section { padding: 72px 0; }
+/* The full nav needs ~860px, so it collapses to the drawer before the layout does. */
+@media (max-width: 960px) {
     .nav-links {
         position: fixed;
         inset: var(--nav-height) 0 0 auto;
@@ -475,11 +476,15 @@ section { padding: 96px 0; }
         box-shadow: var(--shadow);
     }
     .nav-links.is-open { transform: translateX(0); }
+    .nav-links:not(.is-open) { visibility: hidden; transition: transform 0.25s ease, visibility 0s 0.25s; }
     .nav-toggle { display: inline-flex; align-items: center; justify-content: center; }
+}
+
+@media (max-width: 760px) {
+    section { padding: 72px 0; }
     .about-grid { grid-template-columns: 1fr; }
     .timeline { padding-left: 24px; }
     .timeline-item::before { left: -31px; }
-    .nav-links:not(.is-open) { visibility: hidden; transition: transform 0.25s ease, visibility 0s 0.25s; }
     .demo-panel { padding: 20px; }
     .demo-stage { aspect-ratio: 3 / 4; max-height: 80vh; }
     .demo-placeholder { padding: 20px; }
