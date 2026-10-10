@@ -360,8 +360,9 @@ section { padding: 96px 0; }
 .demo-stage {
     position: relative;
     width: 100%;
-    aspect-ratio: 16 / 10;
-    max-height: 720px;
+    /* The Qt app's wide layout centers a non-scrolling ~690px detail column, so
+       anything shorter clips it top and bottom. Narrow layout scrolls itself. */
+    height: 760px;
     background: #061325;
     border-radius: 8px;
     overflow: hidden;
@@ -486,6 +487,6 @@ section { padding: 96px 0; }
     .timeline { padding-left: 24px; }
     .timeline-item::before { left: -31px; }
     .demo-panel { padding: 20px; }
-    .demo-stage { aspect-ratio: 3 / 4; max-height: 80vh; }
+    .demo-stage { height: auto; aspect-ratio: 3 / 4; max-height: 80vh; }
     .demo-placeholder { padding: 20px; }
 }
