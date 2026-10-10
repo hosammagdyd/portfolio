@@ -38,6 +38,14 @@
             navToggle.setAttribute('aria-expanded', String(isOpen));
         });
 
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && navLinks.classList.contains('is-open')) {
+                navLinks.classList.remove('is-open');
+                navToggle.setAttribute('aria-expanded', 'false');
+                navToggle.focus();
+            }
+        });
+
         navLinks.querySelectorAll('a').forEach(function (link) {
             link.addEventListener('click', function () {
                 navLinks.classList.remove('is-open');
@@ -56,7 +64,7 @@
                     revealObserver.unobserve(entry.target);
                 }
             });
-        }, { threshold: 0.15 });
+        }, { threshold: 0.05, rootMargin: '0px 0px -40px 0px' });
         revealTargets.forEach(function (el) { revealObserver.observe(el); });
     } else {
         revealTargets.forEach(function (el) { el.classList.add('is-visible'); });
