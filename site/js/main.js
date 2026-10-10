@@ -150,6 +150,21 @@
     if (launchBtn && demoStage) {
         launchBtn.addEventListener('click', function () {
             if (demoStage.classList.contains('is-loading') || demoStage.classList.contains('is-loaded')) return;
+
+            if (window.location.protocol === 'file:') {
+                demoStage.classList.add('is-error');
+                var placeholder = demoStage.querySelector('.demo-placeholder');
+                if (placeholder) {
+                    placeholder.innerHTML =
+                        '<p class="demo-error">This demo needs to be served over HTTP(S) — browsers block ' +
+                        'WebAssembly from loading when a page is opened directly as a local file ' +
+                        '(<code>file://</code>). Run a local server from the <code>site/</code> folder, e.g. ' +
+                        '<code>python3 -m http.server</code>, then open ' +
+                        '<code>http://localhost:8000</code> instead.</p>';
+                }
+                return;
+            }
+
             demoStage.classList.add('is-loading');
             launchBtn.disabled = true;
             launchBtn.textContent = 'Loading demo...';
