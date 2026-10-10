@@ -1,0 +1,89 @@
+name: Qt Showcase CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'qt-showcase/**'
+      - '.github/workflows/qt-showcase-ci.yml'
+  pull_request:
+    paths:
+      - 'qt-showcase/**'
+  workflow_dispatch:
+
+jobs:
+  desktop-build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Qt (Desktop)
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: '6.8.3'
+          host: 'linux'
+          target: 'desktop'
+          arch: 'linux_gcc_64'
+          dir: '${{ github.workspace }}/qt'
+          cache: true
+
+      - name: Configure
+        run: >
+          qt-cmake -G Ninja
+          -S qt-showcase
+          -B build-desktop
+          -DCMAKE_BUILD_TYPE=Debug
+
+      - name: Build
+        run: cmake --build build-desktop
+
+      - name: Run tests
+        run: ctest --test-dir build-desktop --output-on-failure
+
+  wasm-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Qt (Desktop host tools)
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: '6.8.3'
+          host: 'linux'
+          target: 'desktop'
+          arch: 'linux_gcc_64'
+          dir: '${{ github.workspace }}/qt'
+          cache: true
+
+      - name: Install Qt (WebAssembly, single-threaded)
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: '6.8.3'
+          host: 'linux'
+          target: 'desktop'
+          arch: 'wasm_singlethread'
+          dir: '${{ github.workspace }}/qt'
+          install-deps: 'false'
+          cache: true
+
+      - name: Set up Emscripten
+        uses: mymindstorm/setup-emsdk@v14
+        with:
+          version: '3.1.56'
+
+      - name: Configure (WASM, MinSizeRel)
+        run: >
+          qt-cmake -G Ninja
+          -S qt-showcase
+          -B build-wasm
+          -DCMAKE_BUILD_TYPE=MinSizeRel
+
+      - name: Build
+        run: cmake --build build-wasm
+
+      - name: Upload WASM artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: qt-showcase-wasm
+          path: build-wasm/app/
+          retention-days: 7
