@@ -815,6 +815,9 @@ section { padding: 96px 0; }
     .timeline-item::before { left: -30px; }
     .back-to-top { right: 16px; bottom: 16px; }
     .demo-panel { padding: 20px; }
-    .demo-stage { height: auto; aspect-ratio: 3 / 4; max-height: 80vh; }
-    .demo-placeholder { padding: 20px; }
+    /* Below this width the demo opens full-screen in its own tab instead of
+       embedding inline (see js/main.js) — the stage is just the placeholder
+       card, not a sized viewport for an iframe. */
+    .demo-stage { aspect-ratio: auto; height: auto; max-height: none; }
+    .demo-placeholder { padding: 28px 20px; }
 }

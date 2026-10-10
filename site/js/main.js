@@ -146,8 +146,34 @@
     /* ---------- Lazy-load the Qt WASM demo ---------- */
     var launchBtn = document.getElementById('launch-demo');
     var demoStage = document.getElementById('demo-stage');
+    var demoNote = document.querySelector('.demo-note');
+
+    // The Qt app has its own responsive breakpoint at 700px (switches to a
+    // stacked mobile layout) and this page switches to its own mobile layout
+    // at 760px. Embedding it inline in an already narrow page just squeezes
+    // a responsive app into an even smaller box — opening it full-screen in
+    // its own tab instead gives it the whole viewport, which is what it's
+    // actually designed for on phones.
+    var MOBILE_BREAKPOINT = 760;
+    function isMobileViewport() {
+        return window.matchMedia('(max-width: ' + MOBILE_BREAKPOINT + 'px)').matches;
+    }
+
+    function updateLaunchCopy() {
+        if (!launchBtn || demoStage.classList.contains('is-loading') || demoStage.classList.contains('is-loaded')) return;
+        if (isMobileViewport()) {
+            launchBtn.textContent = 'Open Full-Screen Demo (~19 MB)';
+            if (demoNote) demoNote.textContent = 'Opens in a new full-screen tab on phones for the best fit — best on Wi-Fi. Built with Qt 6.8, C++, QML, and WebAssembly.';
+        } else {
+            launchBtn.textContent = 'Launch Live Demo (~19 MB)';
+            if (demoNote) demoNote.textContent = 'Loads on click only — best viewed on desktop / Wi-Fi. Built with Qt 6.8, C++, QML, and WebAssembly.';
+        }
+    }
 
     if (launchBtn && demoStage) {
+        updateLaunchCopy();
+        window.addEventListener('resize', updateLaunchCopy);
+
         launchBtn.addEventListener('click', function () {
             if (demoStage.classList.contains('is-loading') || demoStage.classList.contains('is-loaded')) return;
 
@@ -162,6 +188,11 @@
                         '<code>python3 -m http.server</code>, then open ' +
                         '<code>http://localhost:8000</code> instead.</p>';
                 }
+                return;
+            }
+
+            if (isMobileViewport()) {
+                window.open('demo/appQtShowcase.html', '_blank', 'noopener');
                 return;
             }
 
