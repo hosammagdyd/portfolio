@@ -1,0 +1,2 @@
+set(__QT_DEPLOY_TARGET_appQtShowcase_FILE /media/hosam-magdy/CC2C03102C02F4EC/Code/portfolio/qt-showcase/build/WebAssembly_Qt_6_8_3_single_threaded_Debug/appQtShowcase.js)
+set(__QT_DEPLOY_TARGET_appQtShowcase_TYPE EXECUTABLE)

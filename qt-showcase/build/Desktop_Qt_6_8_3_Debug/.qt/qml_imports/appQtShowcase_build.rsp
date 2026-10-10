@@ -1,0 +1,14 @@
+-rootPath
+/media/hosam-magdy/CC2C03102C02F4EC/Code/portfolio/qt-showcase
+-cmake-output
+-output-file
+/media/hosam-magdy/CC2C03102C02F4EC/Code/portfolio/qt-showcase/build/Desktop_Qt_6_8_3_Debug/.qt/qml_imports/appQtShowcase_build.cmake
+-importPath
+/media/hosam-magdy/CC2C03102C02F4EC/Code/portfolio/qt-showcase/build/Desktop_Qt_6_8_3_Debug/QtShowcase
+-importPath
+/media/hosam-magdy/CC2C03102C02F4EC/Code/portfolio/qt-showcase/build/Desktop_Qt_6_8_3_Debug
+-importPath
+/home/hosam-magdy/Qt/6.8.3/gcc_64/qml
+-qrcFiles
+/media/hosam-magdy/CC2C03102C02F4EC/Code/portfolio/qt-showcase/build/Desktop_Qt_6_8_3_Debug/.qt/rcc/qmake_QtShowcase.qrc
+/media/hosam-magdy/CC2C03102C02F4EC/Code/portfolio/qt-showcase/build/Desktop_Qt_6_8_3_Debug/.qt/rcc/appQtShowcase_raw_qml_0.qrc

@@ -1,0 +1,5 @@
+module QtShowcase
+typeinfo appQtShowcase.qmltypes
+prefer :/qt/qml/QtShowcase/
+Main 254.0 Main.qml
+

@@ -1,0 +1,5 @@
+--resource
+/media/hosam-magdy/CC2C03102C02F4EC/Code/portfolio/qt-showcase/build/WebAssembly_Qt_6_8_3_single_threaded_Debug/.qt/rcc/qmake_QtShowcase.qrc
+--resource
+/media/hosam-magdy/CC2C03102C02F4EC/Code/portfolio/qt-showcase/build/WebAssembly_Qt_6_8_3_single_threaded_Debug/.qt/rcc/appQtShowcase_raw_qml_0.qrc
+/qt/qml/QtShowcase/Main.qml

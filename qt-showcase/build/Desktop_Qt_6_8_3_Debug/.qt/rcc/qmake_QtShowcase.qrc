@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix="/qt/qml/QtShowcase">
+    <file alias="qmldir">/media/hosam-magdy/CC2C03102C02F4EC/Code/portfolio/qt-showcase/build/Desktop_Qt_6_8_3_Debug/QtShowcase/qmldir</file>
+  </qresource>
+</RCC>
+
