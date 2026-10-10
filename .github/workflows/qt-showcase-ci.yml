@@ -24,6 +24,7 @@ jobs:
           host: 'linux'
           target: 'desktop'
           arch: 'linux_gcc_64'
+          modules: 'qtstatemachine'
           dir: '${{ github.workspace }}/qt'
           cache: true
 
@@ -52,16 +53,21 @@ jobs:
           host: 'linux'
           target: 'desktop'
           arch: 'linux_gcc_64'
+          modules: 'qtstatemachine'
           dir: '${{ github.workspace }}/qt'
           cache: true
 
+      # aqt lists WebAssembly packages under host "all_os" / target "wasm",
+      # not "linux" / "desktop" — WASM builds are platform-independent at
+      # the package level, so this differs from the desktop install above.
       - name: Install Qt (WebAssembly, single-threaded)
         uses: jurplel/install-qt-action@v4
         with:
           version: '6.8.3'
-          host: 'linux'
-          target: 'desktop'
+          host: 'all_os'
+          target: 'wasm'
           arch: 'wasm_singlethread'
+          modules: 'qtstatemachine'
           dir: '${{ github.workspace }}/qt'
           install-deps: 'false'
           cache: true
