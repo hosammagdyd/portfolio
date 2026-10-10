@@ -56,22 +56,30 @@
 <main id="main">
 
 <section class="hero" id="top">
+    <canvas class="hero-canvas" aria-hidden="true"></canvas>
     <div class="hero-glow" aria-hidden="true"></div>
+    <div class="hero-overlay" aria-hidden="true"></div>
     <div class="container hero-content">
-        <p class="eyebrow hero-in" style="--d:0">Hi, my name is</p>
-        <h1 class="hero-in" style="--d:1">Hosam Magdy Lotfy.</h1>
-        <h2 class="hero-in" style="--d:2">I build real-time embedded Linux & Qt/C++ systems.</h2>
-        <p class="hero-in" style="--d:3">
+        <a class="status-pill hero-in" style="--d:0" href="https://www.upwork.com/freelancers/~0103dbf9d667748bbf" target="_blank" rel="noopener">
+            <span class="status-dot"></span> Available for freelance projects
+        </a>
+        <p class="eyebrow hero-in" style="--d:1">Hi, my name is</p>
+        <h1 class="hero-name hero-in" style="--d:2">Hosam Magdy Lotfy<span class="accent">.</span></h1>
+        <h2 class="hero-in" style="--d:3" aria-label="I build real-time embedded Linux and Qt/C++ systems.">
+            <span aria-hidden="true">I build <span class="typed" data-phrases='["real-time embedded Linux systems.", "Qt/QML medical-device HMIs.", "multithreaded C++ applications.", "secure Raspberry Pi platforms."]'>real-time embedded Linux systems.</span><span class="caret"></span></span>
+        </h2>
+        <p class="hero-in" style="--d:4">
             I'm an Embedded Linux software engineer who builds multithreaded C++ and Qt/QML
             human-machine interfaces — currently developing the HMI for EZVent, Egypt's first
             licensed ICU ventilator, at Ezz Medical Company. This site embeds a live, from-scratch
             Qt/C++ demo I built to showcase the same architecture patterns.
         </p>
-        <div class="cta-row hero-in" style="--d:4">
-            <a class="btn btn-solid" href="#demo">View Live Demo</a>
-            <a class="btn" href="#contact">Contact Me</a>
+        <div class="cta-row hero-in" style="--d:5">
+            <a class="btn btn-solid btn-lg" href="#demo">View Live Demo</a>
+            <a class="btn btn-lg" href="#contact">Contact Me</a>
         </div>
     </div>
+    <a class="scroll-cue" href="#about" aria-label="Scroll to About section"><span></span></a>
 </section>
 
 <section id="about">
@@ -374,5 +382,6 @@
 <button class="back-to-top" type="button" aria-label="Back to top"><svg><use href="#i-arrow-up"/></svg></button>
 
 <script src="js/main.js"></script>
+<script src="js/hero.js"></script>
 </body>
 </html>

@@ -264,6 +264,7 @@ section { padding: 96px 0; }
     font-weight: 700;
 }
 .hero h2 {
+    line-height: 1.25;
     font-size: clamp(1.4rem, 4vw, 2.6rem);
     color: var(--text-muted);
     margin: 0 0 24px;
@@ -306,6 +307,126 @@ section { padding: 96px 0; }
 @keyframes glow-drift {
     from { transform: translate(0, 0) scale(1); }
     to { transform: translate(-8%, 12%) scale(1.15); }
+}
+.hero-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+/* Keeps the text side calm and fades the bottom edge into the next section. */
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+        linear-gradient(90deg, var(--bg) 0%, color-mix(in srgb, var(--bg) 70%, transparent) 35%, transparent 70%),
+        linear-gradient(180deg, transparent 88%, var(--bg) 100%);
+}
+.hero-content { z-index: 2; }
+
+.status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 28px;
+    padding: 7px 16px 7px 12px;
+    border-radius: 999px;
+    border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+    background: color-mix(in srgb, var(--bg-elevated) 70%, transparent);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+}
+.status-pill:hover { border-color: var(--accent); transform: translateY(-2px); }
+.status-dot {
+    position: relative;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #22c55e;
+}
+.status-dot::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: #22c55e;
+    animation: ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+@keyframes ping { 75%, 100% { transform: scale(2.6); opacity: 0; } }
+
+.hero-name {
+    background: linear-gradient(100deg, var(--text-bright) 0%, var(--text-bright) 40%, var(--accent) 50%, var(--text-bright) 60%, var(--text-bright) 100%);
+    background-size: 250% 100%;
+    background-position: 100% 0;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: hero-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards, sheen 7s ease-in-out 1.6s infinite;
+    animation-delay: calc(0.15s + var(--d, 0) * 0.12s), 1.6s;
+}
+.hero-name .accent { -webkit-text-fill-color: var(--accent); }
+@keyframes sheen {
+    0% { background-position: 100% 0; }
+    25%, 100% { background-position: 0% 0; }
+}
+
+.hero h2 .typed { color: var(--accent); }
+.caret {
+    display: inline-block;
+    width: 3px;
+    height: 0.9em;
+    margin-left: 4px;
+    vertical-align: -0.08em;
+    background: var(--accent);
+    animation: blink 1s steps(1) infinite;
+}
+@keyframes blink { 50% { opacity: 0; } }
+
+.scroll-cue {
+    position: absolute;
+    left: 50%;
+    bottom: 28px;
+    z-index: 2;
+    width: 24px;
+    height: 38px;
+    margin-left: -12px;
+    border: 2px solid var(--text-muted);
+    border-radius: 14px;
+    opacity: 0.7;
+    transition: opacity 0.2s ease, border-color 0.2s ease;
+}
+.scroll-cue:hover { opacity: 1; border-color: var(--accent); }
+.scroll-cue span {
+    position: absolute;
+    left: 50%;
+    top: 7px;
+    width: 4px;
+    height: 8px;
+    margin-left: -2px;
+    border-radius: 2px;
+    background: var(--accent);
+    animation: wheel 1.8s ease-in-out infinite;
+}
+@keyframes wheel {
+    0% { transform: translateY(0); opacity: 1; }
+    70% { transform: translateY(12px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 0; }
+}
+@media (max-height: 700px), (max-width: 760px) {
+    .scroll-cue { display: none; }
+}
+@media (max-width: 600px) {
+    .hero h2 { min-height: 2.5em; }
+    .hero-overlay {
+        background:
+            linear-gradient(180deg, color-mix(in srgb, var(--bg) 55%, transparent) 0%, color-mix(in srgb, var(--bg) 75%, transparent) 60%, var(--bg) 100%);
+    }
 }
 
 /* ---------- About ---------- */
