@@ -55,7 +55,13 @@
     }
 
     /* ---------- Scroll-reveal ---------- */
-    var revealTargets = document.querySelectorAll('.reveal');
+    document.querySelectorAll('.stagger').forEach(function (group) {
+        Array.prototype.forEach.call(group.children, function (child, i) {
+            child.style.setProperty('--i', i);
+        });
+    });
+
+    var revealTargets = document.querySelectorAll('.reveal, .stagger');
     if ('IntersectionObserver' in window && revealTargets.length) {
         var revealObserver = new IntersectionObserver(function (entries) {
             entries.forEach(function (entry) {
@@ -83,6 +89,54 @@
             });
         }, { rootMargin: '-45% 0px -50% 0px' });
         sections.forEach(function (s) { navObserver.observe(s); });
+    }
+
+    /* ---------- Scroll-driven effects ---------- */
+    var siteNav = document.querySelector('.site-nav');
+    var heroContent = document.querySelector('.hero-content');
+    var timeline = document.querySelector('.timeline');
+    var timelineItems = document.querySelectorAll('.timeline-item');
+    var backToTop = document.querySelector('.back-to-top');
+    var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var ticking = false;
+
+    function clamp01(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
+
+    function onScroll() {
+        ticking = false;
+        var y = window.scrollY;
+        var vh = window.innerHeight;
+        var maxScroll = document.documentElement.scrollHeight - vh;
+
+        root.style.setProperty('--scroll', maxScroll > 0 ? (y / maxScroll).toFixed(4) : 0);
+        if (siteNav) siteNav.classList.toggle('is-scrolled', y > 10);
+        if (backToTop) backToTop.classList.toggle('is-shown', y > vh * 0.8);
+
+        if (heroContent && !reduceMotion) {
+            heroContent.style.setProperty('--hero-p', clamp01(y / (vh * 0.9)).toFixed(4));
+        }
+
+        if (timeline) {
+            // Fill the line up to the point 60% down the viewport.
+            var rect = timeline.getBoundingClientRect();
+            var marker = vh * 0.6;
+            timeline.style.setProperty('--line', clamp01((marker - rect.top) / rect.height).toFixed(4));
+            timelineItems.forEach(function (item) {
+                item.classList.toggle('is-active', item.getBoundingClientRect().top < marker);
+            });
+        }
+    }
+
+    window.addEventListener('scroll', function () {
+        if (!ticking) { ticking = true; window.requestAnimationFrame(onScroll); }
+    }, { passive: true });
+    window.addEventListener('resize', onScroll);
+    onScroll();
+
+    if (backToTop) {
+        backToTop.addEventListener('click', function () {
+            window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+        });
     }
 
     /* ---------- Footer year ---------- */

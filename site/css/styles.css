@@ -35,8 +35,16 @@
 html { scroll-behavior: smooth; scroll-padding-top: var(--nav-height); }
 @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
-    .reveal { transition: none; }
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        transition-delay: 0s !important;
+    }
+    .hero-content { transform: none !important; opacity: 1 !important; }
 }
+
+.icon-sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
 
 body {
     margin: 0;
@@ -86,14 +94,23 @@ section { padding: 96px 0; }
     height: 1px;
     background: var(--border);
     min-width: 24px;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.2s;
 }
+.section-heading.is-visible::after { transform: scaleX(1); }
 
-.reveal {
+.reveal,
+.stagger > * {
     opacity: 0;
-    transform: translateY(24px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
+    transform: translateY(28px);
+    transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.reveal.is-visible { opacity: 1; transform: none; }
+.reveal-right { transform: translateX(32px); }
+.reveal-scale { transform: translateY(28px) scale(0.97); }
+.stagger > * { transition-delay: calc(var(--i, 0) * 90ms); }
+.reveal.is-visible,
+.stagger.is-visible > * { opacity: 1; transform: none; }
 
 .btn {
     display: inline-flex;
@@ -139,6 +156,18 @@ section { padding: 96px 0; }
     z-index: -1;
 }
 :root[data-theme="light"] .site-nav::before { background: rgba(244, 247, 251, 0.85); }
+.site-nav { transition: box-shadow 0.3s ease; }
+.site-nav.is-scrolled { box-shadow: 0 10px 30px -18px rgba(2, 12, 27, 0.6); }
+.scroll-progress {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 2px;
+    background: var(--accent);
+    transform: scaleX(var(--scroll, 0));
+    transform-origin: left;
+}
 
 .site-nav .container {
     display: flex;
@@ -208,12 +237,19 @@ section { padding: 96px 0; }
 
 /* ---------- Hero ---------- */
 .hero {
+    position: relative;
+    overflow: hidden;
     min-height: 100vh;
     min-height: 100svh;
     display: flex;
     flex-direction: column;
     justify-content: center;
     padding-top: var(--nav-height);
+}
+.eyebrow {
+    font-family: var(--font-mono);
+    color: var(--accent);
+    font-size: 1rem;
 }
 .hero .eyebrow {
     font-family: var(--font-mono);
@@ -240,6 +276,37 @@ section { padding: 96px 0; }
     margin: 0 0 40px;
 }
 .hero .cta-row { display: flex; gap: 16px; flex-wrap: wrap; }
+.hero-content {
+    position: relative;
+    width: 100%;
+    transform: translateY(calc(var(--hero-p, 0) * 80px));
+    opacity: calc(1 - var(--hero-p, 0) * 0.9);
+    will-change: transform, opacity;
+}
+.hero-in {
+    opacity: 0;
+    animation: hero-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    animation-delay: calc(0.15s + var(--d, 0) * 0.12s);
+}
+@keyframes hero-in {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: none; }
+}
+.hero-glow {
+    position: absolute;
+    inset: -20% -10% auto auto;
+    width: min(70vw, 720px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--accent-soft) 0%, transparent 65%);
+    filter: blur(20px);
+    animation: glow-drift 14s ease-in-out infinite alternate;
+    pointer-events: none;
+}
+@keyframes glow-drift {
+    from { transform: translate(0, 0) scale(1); }
+    to { transform: translate(-8%, 12%) scale(1.15); }
+}
 
 /* ---------- About ---------- */
 .about-grid {
@@ -302,21 +369,41 @@ section { padding: 96px 0; }
 .timeline {
     position: relative;
     padding-left: 32px;
-    border-left: 2px solid var(--border);
     display: grid;
     gap: 44px;
+}
+.timeline::before,
+.timeline::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--border);
+}
+.timeline::after {
+    background: var(--accent);
+    transform: scaleY(var(--line, 0));
+    transform-origin: top;
 }
 .timeline-item { position: relative; }
 .timeline-item::before {
     content: '';
     position: absolute;
-    left: -39px;
+    left: -38px;
     top: 4px;
+    z-index: 1;
     width: 14px;
     height: 14px;
     border-radius: 50%;
     background: var(--bg);
     border: 2px solid var(--accent);
+    transition: background-color 0.4s ease, box-shadow 0.4s ease;
+}
+.timeline-item.is-active::before {
+    background: var(--accent);
+    box-shadow: 0 0 0 5px var(--accent-soft);
 }
 .timeline-item .role-row {
     display: flex;
@@ -442,7 +529,55 @@ section { padding: 96px 0; }
 .contact-section { text-align: center; }
 .contact-section h2 { font-size: clamp(1.8rem, 4vw, 2.6rem); color: var(--text-bright); margin: 0 0 16px; }
 .contact-section p { color: var(--text-muted); max-width: 480px; margin: 0 auto 36px; }
-.contact-links { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+.contact-section .eyebrow { color: var(--accent); margin: 0 auto 12px; }
+.btn-lg { padding: 15px 30px; font-size: 1rem; }
+.btn-icon { width: 18px; height: 18px; }
+.contact-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-top: 48px;
+}
+.contact-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 6px;
+    height: 100%;
+    padding: 24px 16px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.contact-card:hover,
+.contact-card:focus-visible {
+    transform: translateY(-4px);
+    border-color: var(--accent);
+    box-shadow: var(--shadow);
+}
+.contact-icon {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 8px;
+    border-radius: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--accent-soft);
+    color: var(--accent);
+    transition: background-color 0.25s ease, color 0.25s ease;
+}
+.contact-card:hover .contact-icon { background: var(--accent); color: var(--bg); }
+.contact-icon svg { width: 22px; height: 22px; }
+.contact-label { font-weight: 600; color: var(--text-bright); font-size: 0.95rem; }
+.contact-handle {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    overflow-wrap: anywhere;
+}
 
 /* ---------- Footer ---------- */
 .site-footer {
@@ -455,9 +590,47 @@ section { padding: 96px 0; }
 .site-footer .footer-links {
     display: flex;
     justify-content: center;
-    gap: 18px;
+    gap: 22px;
     margin-bottom: 14px;
 }
+.site-footer .footer-links a {
+    display: inline-flex;
+    color: var(--text-muted);
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+.site-footer .footer-links a:hover { color: var(--accent); transform: translateY(-3px); }
+.site-footer .footer-links svg { width: 20px; height: 20px; }
+
+/* ---------- Back to top ---------- */
+.back-to-top {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid var(--accent);
+    background: var(--bg-elevated);
+    color: var(--accent);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(12px);
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s 0.3s, background-color 0.2s ease;
+    z-index: 90;
+}
+.back-to-top.is-shown {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.2s ease;
+}
+.back-to-top:hover { background: var(--accent-soft); }
+.back-to-top svg { width: 20px; height: 20px; }
 
 /* ---------- Responsive ---------- */
 /* The full nav needs ~860px, so it collapses to the drawer before the layout does. */
@@ -485,7 +658,8 @@ section { padding: 96px 0; }
     section { padding: 72px 0; }
     .about-grid { grid-template-columns: 1fr; }
     .timeline { padding-left: 24px; }
-    .timeline-item::before { left: -31px; }
+    .timeline-item::before { left: -30px; }
+    .back-to-top { right: 16px; bottom: 16px; }
     .demo-panel { padding: 20px; }
     .demo-stage { height: auto; aspect-ratio: 3 / 4; max-height: 80vh; }
     .demo-placeholder { padding: 20px; }
