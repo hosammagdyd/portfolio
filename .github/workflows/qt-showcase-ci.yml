@@ -39,6 +39,8 @@ jobs:
         run: cmake --build build-desktop
 
       - name: Run tests
+        env:
+          QT_QPA_PLATFORM: offscreen
         run: ctest --test-dir build-desktop --output-on-failure
 
   wasm-build:
