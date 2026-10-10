@@ -197,6 +197,23 @@ section { padding: 96px 0; }
 }
 .nav-links a:not(.btn):hover { color: var(--accent); }
 .nav-links a.active-link { color: var(--accent); }
+.nav-links a.nav-resume {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--accent);
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+.nav-links a.nav-resume:hover { background: var(--accent); color: var(--bg); transform: translateY(-1px); }
+.nav-resume svg { width: 16px; height: 16px; }
 
 .icon-link {
     width: 20px;
