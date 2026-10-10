@@ -1,0 +1,29 @@
+# Build output
+build/
+build-*/
+
+# Qt Creator user/session files (machine-specific)
+*.user
+*.user.*
+.qtcreator/
+.qmlls.ini
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+CTestTestfile.cmake
+Makefile
+compile_commands.json
+
+# Emscripten/WASM local cache (none should live in-repo, but just in case)
+.emscripten_cache/
+
+# OS/editor cruft
+.DS_Store
+Thumbs.db
+*~
+
+# Local tool configs (machine-specific, not shared)
+.vscode/
+.claude/

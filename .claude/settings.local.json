@@ -1,9 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(git config *)",
-      "Bash(lsblk -f -o NAME,SIZE,FSTYPE,LABEL,UUID,MOUNTPOINT)",
-      "Bash(sudo -n dmesg)"
-    ]
-  }
-}
